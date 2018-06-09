@@ -5,7 +5,6 @@
  */
 package Epidemia;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -198,7 +197,7 @@ public class obsługaWejścia {
             int wart =  Integer.parseInt(props.getProperty(klucz));
             int lAgent = Integer.parseInt(props.getProperty("liczbaAgentów", defaultProps.getProperty("liczbaAgentów")));
             
-            if (wart < 0 || wart > lAgent) {
+            if (wart < 0 || wart > lAgent - 1) {
                 System.err.println("Niedozwolona wartość " + props.getProperty(klucz) + " dla klucza " + klucz);
                 System.exit(1);
             }
@@ -208,17 +207,39 @@ public class obsługaWejścia {
     
     public void wypiszPlikKonfiguracyjny (PrintWriter writer) {
         
-        writer.println("# twoje wyniki powinny zawierać te komentarze");
-        writer.println("Seed: " + seed);
-        writer.println("Liczba agentów: " + liczbaAgentów);
-        writer.println("Prawd. towarzyski: " + prawdTowarzyski);
-        writer.println("Prawd. spotkania: " + prawdSpotkania);
-        writer.println("Prawd. zarażenia: " + prawdZarażenia);
-        writer.println("Prawd. wyzdrowienia: " + prawdWyzdrowienia);
-        writer.println("Śmiertelność: " + śmiertelność);
-        writer.println("Liczba dni: " + liczbaDni);
-        writer.println("Śr. znajomych: " + śrZnajomych);
-        writer.println("Plik z raportem: " + plikZRaportem);
+        writer.println("#seed dla generatora liczb losowych");
+        writer.println("seed=" + seed);
+        writer.println("");
+        writer.println("#początkowa liczba agentów w populacji");
+        writer.println("#liczba całkowita z przedziału 1..1000000");
+        writer.println("liczbaAgentów=" + liczbaAgentów);
+        writer.println("");
+        writer.println("#prawdopodobieństwo wylosowania agenta towarzyskiego");
+        writer.println("prawdTowarzyski=" + prawdTowarzyski);
+        writer.println("");
+        writer.println("#prawdopodobieństwo spotkaniach");
+        writer.println("prawdSpotkania=" + prawdSpotkania);
+        writer.println("");
+        writer.println("#prawdopodobieństwo zarażenia");
+        writer.println("prawdZarażenia=" + prawdZarażenia);
+        writer.println("");
+        writer.println("#prawdopodobieństwo wyzdrowienia");
+        writer.println("prawdWyzdrowienia=" + prawdWyzdrowienia);
+        writer.println("");
+        writer.println("#Smiertelność");
+        writer.println("śmiertelność=" + śmiertelność);
+        writer.println("");
+        writer.println("#liczba dni jaką trwa symulacja");
+        writer.println("#liczba całkowita z przedziału 1..1000");
+        writer.println("liczbaDni=" + liczbaDni);
+        writer.println("");
+        writer.println("#średnia liczba znajomych każdego agenta");
+        writer.println("#liczba całkowita z przedziału 0..liczbaAgentów-1");
+        writer.println("śrZnajomych: " + śrZnajomych);
+        writer.println("");
+        writer.println("#ścieżka do pliku z raportem");
+        writer.println("#jeżeli taki plik istnieje to zostanie nadpisany");
+        writer.println("plikZRaportem=" + plikZRaportem);
         
     }
     

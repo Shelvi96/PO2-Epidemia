@@ -18,18 +18,19 @@ public class symulacjaPrzebiegu {
     private final GrafSpołeczności g;
     private int numerDnia;
     PriorityQueue<Spotkanie> kalendarzSpotkań;
-    Random rand = new Random();
+    Random rand;
     
     private int ileZdrowych;
     private int ileOdpornych;
     private int ileChorych;
     
-    public symulacjaPrzebiegu(obsługaWejścia input, GrafSpołeczności g) {
+    public symulacjaPrzebiegu(obsługaWejścia input, GrafSpołeczności g, Random rand) {
         
+        this.rand = rand;
         this.input = input;
         this.g = g;
         this.numerDnia = 1;
-        kalendarzSpotkań = new PriorityQueue<>(new SpotkaniaComparator());
+        this.kalendarzSpotkań = new PriorityQueue<>(new SpotkaniaComparator());
         
     }
     
@@ -43,63 +44,44 @@ public class symulacjaPrzebiegu {
         writer.println("# liczność w kolejnych dniach");
         writer.println(ileZdrowych + " " + ileChorych + " " + ileOdpornych);
         
-        while (numerDnia <= input.getLiczbaDni()) {
+        int liczbaDni = input.getLiczbaDni();
+        
+        while (numerDnia <= liczbaDni) {
             
-            ArrayList<Wierzchołek> agenci = g.getWierzchołki();
+            ArrayList<Agent> agenci = g.getWierzchołki();
             double prawd;
             
             // uśmiercamy lub leczymy agentów
-            for (Wierzchołek w: agenci) {
+            for (Agent a: agenci) {
 
                 prawd = rand.nextDouble();
 
                 // Jeśli agent jest żywy i chory to może umrzeć
-                if (w.isŻywy() && !w.isZdrowy() && prawd <= input.getŚmiertelność()) {
-                    w.setŻywy(false);
+                if (a.isŻywy() && !a.isZdrowy() && prawd <= input.getŚmiertelność()) {
+                    a.setŻywy(false);
                     ileChorych--;
                 }
 
                 prawd = rand.nextDouble();
                 
                 // Jeśli agent jest żywy i chory to może wyzdrowieć. Nabiera wówczas odporności.
-                if (w.isŻywy() && !w.isZdrowy() && prawd <= input.getPrawdWyzdrowienia()) {
-                    w.setZdrowy(true);
-                    w.setOdporny(true);
+                if (a.isŻywy() && !a.isZdrowy() && prawd <= input.getPrawdWyzdrowienia()) {
+                    a.setZdrowy(true);
+                    a.setOdporny(true);
                     ileChorych--;
                     ileOdpornych++;
                 }
                 
             }
-            
+
             // ustalamy spotkania
-            for (Wierzchołek w: agenci) {
-                
-                if (w.isŻywy() && w.maSąsiadów()) {
-                    
-                    double prawdSpotkania = input.getPrawdSpotkania();
-                    
-                    if (!w.isZdrowy() && w.getIdTyp() == 1)
-                        prawdSpotkania /= 2;
-                    
-                    prawd = rand.nextDouble();
-                    
-                    while (prawd <= prawdSpotkania) {
-                        
-                        Spotkanie s = new Spotkanie(w, numerDnia, input.getLiczbaDni(), agenci);
-                        
-                        // Jeśli udało się znaleźć towarzysza (łapię tu błąd z funkcji losujTowarzysza)
-                        if (s.getTowarzysz() != -1) {
-                            kalendarzSpotkań.add(new Spotkanie(w, numerDnia, input.getLiczbaDni(), agenci));
-                        }
-                        
-                        prawd = rand.nextDouble();
-                                
-                    }
-                    
+            for (Agent a: agenci) {
+                if (a.isŻywy() && a.maSąsiadów()) {
+                    ArrayList<Spotkanie> spotkania = a.ustalSpotkania(input.getPrawdSpotkania(), numerDnia, input.getLiczbaDni(), agenci, input.getSeed());
+                    kalendarzSpotkań.addAll(spotkania);
                 }
-                
             }
-            
+
             // odbywamy zaplanowane spotkania
             Spotkanie s = kalendarzSpotkań.peek();
             
@@ -110,6 +92,7 @@ public class symulacjaPrzebiegu {
                 int a1 = s.getOsoba();
                 int a2 = s.getTowarzysz();
                 
+                // Jeśli w między czasie agenci nie zostali pokonani przez epidemię, to spotkanie odbywa się
                 if (agenci.get(a1-1).isŻywy() && agenci.get(a2-1).isŻywy()) {
                     
                     prawd = rand.nextDouble();

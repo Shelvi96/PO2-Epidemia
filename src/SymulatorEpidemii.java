@@ -4,8 +4,7 @@ import Epidemia.obsługaWejścia;
 import Epidemia.symulacjaPrzebiegu;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Random;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -28,8 +27,10 @@ public class SymulatorEpidemii {
         
         final int liczbaKrawędzi = input.getLiczbaAgentów() * input.getŚrZnajomych() / 2;
         
+        Random rand = new Random(input.getSeed());
+        
         // Generuję graf
-        GrafSpołeczności g = new GrafSpołeczności(liczbaKrawędzi, input.getLiczbaAgentów(), input.getPrawdTowarzyski()); 
+        GrafSpołeczności g = new GrafSpołeczności(liczbaKrawędzi, input.getLiczbaAgentów(), input.getPrawdTowarzyski(), input.getSeed(), rand); 
                 
         try {
             
@@ -42,7 +43,7 @@ public class SymulatorEpidemii {
             g.wypiszGraf(writer);
 
             // Tworzę symulację dla zadanej konfiguracji i wygenerowanego grafu
-            symulacjaPrzebiegu s = new symulacjaPrzebiegu(input, g);
+            symulacjaPrzebiegu s = new symulacjaPrzebiegu(input, g, rand);
             s.symulujPrzebieg(writer);
             
             writer.close();
