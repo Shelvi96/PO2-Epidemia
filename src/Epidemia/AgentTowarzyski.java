@@ -18,11 +18,12 @@ public class AgentTowarzyski extends Agent {
     }
     
     @Override
-    ArrayList<Spotkanie> ustalSpotkania(double prawdSpotkania, int numerDnia, int liczbaDni, ArrayList<Agent> agenci, int seed) {
+    ArrayList<Spotkanie> ustalSpotkania(double prawdSpotkania, int numerDnia, int liczbaDni, ArrayList<Agent> agenci) {
         
         double prawd = rand.nextDouble();
         ArrayList<Spotkanie> Spotkania = new ArrayList<>();
-                
+        
+        // Losujemy spotkania, dopóki agent chce się spotykać
         while (prawd <= prawdSpotkania) {
             
             HashSet<Integer> kandydaciNaTowarzyszy = new HashSet<>();

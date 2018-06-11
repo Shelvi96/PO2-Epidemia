@@ -34,7 +34,7 @@ public abstract class Agent {
         
     }
     
-    abstract ArrayList<Spotkanie> ustalSpotkania (double prawdSpotkania, int numerDnia, int liczbaDni, ArrayList<Agent> agenci, int seed);
+    abstract ArrayList<Spotkanie> ustalSpotkania (double prawdSpotkania, int numerDnia, int liczbaDni, ArrayList<Agent> agenci);
 
     public void dodajSąsiada (int s) {
         sąsiedzi.add(s);
@@ -93,8 +93,4 @@ public abstract class Agent {
         return sąsiedzi;
     }
 
-    public void setSąsiedzi(ArrayList<Integer> sąsiedzi) {
-        this.sąsiedzi = sąsiedzi;
-    }
-    
 }

@@ -14,17 +14,17 @@ import java.util.*;
  */
 public class symulacjaPrzebiegu {
 
-    private final obsługaWejścia input;
-    private final GrafSpołeczności g;
+    Random rand;
+    private final obslugaWejscia input;
+    private final GrafSpolecznosci g;
     private int numerDnia;
     PriorityQueue<Spotkanie> kalendarzSpotkań;
-    Random rand;
     
     private int ileZdrowych;
     private int ileOdpornych;
     private int ileChorych;
     
-    public symulacjaPrzebiegu(obsługaWejścia input, GrafSpołeczności g, Random rand) {
+    public symulacjaPrzebiegu(obslugaWejscia input, GrafSpolecznosci g, Random rand) {
         
         this.rand = rand;
         this.input = input;
@@ -77,7 +77,7 @@ public class symulacjaPrzebiegu {
             // ustalamy spotkania
             for (Agent a: agenci) {
                 if (a.isŻywy() && a.maSąsiadów()) {
-                    ArrayList<Spotkanie> spotkania = a.ustalSpotkania(input.getPrawdSpotkania(), numerDnia, input.getLiczbaDni(), agenci, input.getSeed());
+                    ArrayList<Spotkanie> spotkania = a.ustalSpotkania(input.getPrawdSpotkania(), numerDnia, input.getLiczbaDni(), agenci);
                     kalendarzSpotkań.addAll(spotkania);
                 }
             }
