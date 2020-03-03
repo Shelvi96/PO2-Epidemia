@@ -17,7 +17,7 @@ Dla porównania efektywności poszczególnych strategii szeregowania stosowane s
 średni czas oczekiwania — średni czas przebywania zadania w kolejce zadań oczekujących.
 Istnieją również inne kryteria, ale dla zastosowania większości z nich, poza informacją początkową o kolejce zadań, wystarczy informacja o momencie zakończenia poszczególnych zadań w serii.
 
-Zadanie
+# Zadanie
 Należy napisać program Planista, który pozwoli na przeprowadzenie eksperymentów polegających na porównaniu efektywności wybranych strategii zgodnie z określonym kryterium.
 
 Należy zaimplementować następujące strategie szeregowania: FCFS, SJF, SRF, PS, RR z różną wielkością q oraz oba wymienione kryteria porównywania efektywności.
